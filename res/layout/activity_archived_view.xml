@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="in.rohanarora.todo.ArchivedView" >
+    
+    <TextView
+        android:id="@+id/titleViewArchived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="40dp"
+        android:text="Title"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp" >
+
+        <Button
+            android:id="@+id/backArchived"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/Red"
+            android:onClick="deleteArchived"
+            android:text="Delete" />
+
+        <Button
+            android:id="@+id/datePickArchived"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/Yellow"
+            android:onClick="unarchive"
+            android:text="UnArchive" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/descriptionViewArchived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/titleViewArchived"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/titleViewArchived"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="38dp"
+        android:maxLines="10"
+        android:text="Description"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/dateViewArchived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/descriptionViewArchived"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="46dp"
+        android:text="date" />
+
+</RelativeLayout>

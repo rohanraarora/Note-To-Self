@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="in.rohanarora.todo.EditToDo" >
+
+    <TextView
+        android:id="@+id/textEditItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text=" Edit Item"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/descriptionEdit"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false" >
+
+        <Button
+            android:id="@+id/discardEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/Red"
+            android:onClick="discardEdit"
+            android:text="Discard" />
+
+        <Button
+            android:id="@+id/saveEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/Green"
+            android:onClick="saveEdit"
+            android:text="Save" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/descriptionEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/titleEdit"
+        android:layout_below="@+id/titleEdit"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:hint="Description"
+        android:inputType="text|textMultiLine"
+        android:maxLines="10"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/titleEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textEditItem"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="38dp"
+        android:ems="10"
+        android:hint="Title"
+        android:inputType="textPersonName"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" />
+
+    <Button
+        android:id="@+id/datePickEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/descriptionEdit"
+        android:layout_below="@+id/descriptionEdit"
+        android:layout_marginTop="56dp"
+        android:onClick="pickDateEdit"
+        android:text="Pick Date"
+        android:textSize="30sp" />
+
+</RelativeLayout>
