@@ -1,12 +1,9 @@
 package in.rohanarora.todo;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -70,46 +67,32 @@ public class ItemView extends Activity {
 	}
 	
 	public void delete(View view){
-		OnStart.sp = getSharedPreferences("TODO Items", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = OnStart.sp.edit();
-		Set<String> currentTitles = OnStart.sp.getStringSet("title", null);
-		Set<String> newTitle = new LinkedHashSet<String>();
-		newTitle.addAll(currentTitles);
-		newTitle.remove(titleView);
-		editor.putStringSet("title", newTitle);
-		editor.remove(titleView);
-		editor.commit();
+		ItemOpenHelper ioh = new ItemOpenHelper(getApplicationContext());
+		SQLiteDatabase db = ioh.getWritableDatabase();
 		TodoItem item = OnStart.map.get(titleView);
 		OnStart.list.remove(item);
 		OnStart.map.remove(item.title);
 		OnStart.ad.notifyDataSetChanged();
+		String[] titles = {item.title};
+		db.delete(ItemOpenHelper.ITEM_TABLE_NAME, ItemOpenHelper.COLUMN_TITLE + "= ?" , titles );
 		Toast t = Toast.makeText(this, "Item Deleted", Toast.LENGTH_SHORT);
 		t.show();
 		this.finish();
 	}
 	
 	public void done(View view){
-		OnStart.sp = getSharedPreferences("TODO Items", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = OnStart.sp.edit();
-		Set<String> currentTitles = OnStart.sp.getStringSet("title", null);
-		Set<String> newTitle = new LinkedHashSet<String>();
-		Set<String> doneTitles = OnStart.sp.getStringSet("done", null);
-		Set<String> newDone = new LinkedHashSet<String>();
-		if(doneTitles != null)
-			newDone.addAll(doneTitles);
-		newTitle.addAll(currentTitles);
-		newTitle.remove(titleView);
-		newDone.add(titleView);
-		editor.putStringSet("title", newTitle);
-		editor.putStringSet("done", newDone);
-		editor.commit();
+		ItemOpenHelper ioh = new ItemOpenHelper(getApplicationContext());
+		SQLiteDatabase db = ioh.getWritableDatabase();
 		TodoItem item = OnStart.map.get(titleView);
 		OnStart.list.remove(item);
 		OnStart.map.remove(titleView);
 		OnStart.ad.notifyDataSetChanged();
+		String[] titles = {item.title};
+		db.delete(ItemOpenHelper.ITEM_TABLE_NAME, ItemOpenHelper.COLUMN_TITLE + " = ?" , titles );
 		Archived.listArchived.add(item);
 		Archived.mapArchived.put(item.title, item);
 		Archived.adArchived.notifyDataSetChanged();
+		ItemOpenHelper.addToDatabase(db, ItemOpenHelper.ARCHIVED_ITEM_TABLE_NAME, item);
 		Toast t = Toast.makeText(this, "Item Archived", Toast.LENGTH_SHORT);
 		t.show();
 		this.finish();

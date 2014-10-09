@@ -1,29 +1,21 @@
 package in.rohanarora.todo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
-
 import android.app.Activity;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;;
 
 public class OnStart extends Activity {
@@ -40,49 +32,18 @@ public class OnStart extends Activity {
 		ad = new CustomArrayAdapter(this, 0, list);
 		final ListView lv = (ListView) findViewById(R.id.list);
 		lv.setAdapter(ad);
-		sp = getSharedPreferences("TODO Items", Context.MODE_PRIVATE);
-		TodoItem firstTime = new TodoItem("Make a new ToDo Item" , " Delete this task and make a new ToDo item." , "Today" , Color.WHITE);
-		Set<String> title = sp.getStringSet("title", null);
-//		Set<String> completed = sp.getStringSet("completed", null);
-		if(title != null){
-			String[] titles = title.toArray(new String[title.size()]);
-				for(int i = 0;i<titles.length;i++){
-					Set<String> items = sp.getStringSet(titles[i], null);
-					String[] todoitem = items.toArray(new String[items.size()]);
-					Arrays.sort(todoitem);
-					TodoItem item = new TodoItem(todoitem[0].substring(1), todoitem[1].substring(1), todoitem[2].substring(1), Color.WHITE);
-//					if(completed.contains(item.title))
-	//						item.done = true;
-					list.add(item);
-					map.put(item.title, item);
-					ad.notifyDataSetChanged();
-				}
+		ItemOpenHelper ioh = new ItemOpenHelper(this.getApplicationContext());
+		SQLiteDatabase db =  ioh.getReadableDatabase();
+		Cursor c = db.query(ItemOpenHelper.ITEM_TABLE_NAME, null, null, null, null, null, null);
+		while(c.moveToNext()){
+			String title = c.getString(c.getColumnIndex(ItemOpenHelper.COLUMN_TITLE));
+			String description = c.getString(c.getColumnIndex(ItemOpenHelper.COLUMN_DESC));
+			String date = c.getString(c.getColumnIndex(ItemOpenHelper.COLUMN_DATE));
+			TodoItem item = new TodoItem(title, description, date, Color.WHITE);
+			list.add(item);
+			map.put(item.title, item);
+			ad.notifyDataSetChanged();
 		}
-		else{
-			Toast.makeText(this, "Add a new ToDo task", Toast.LENGTH_LONG).show();
-//			SharedPreferences.Editor editor = sp.edit();
-//			editor.putStringSet("title", null);
-//			editor.putStringSet("Done", null);
-//			editor.commit();
-//			Set<String> currentItem = sp.getStringSet(firstTime.title, null);
-//			Set<String> newItem = new LinkedHashSet<String>();
-//			Set<String> currentTitles = sp.getStringSet("title", null);
-//			Set<String> newTitle = new LinkedHashSet<String>();
-//			if(currentTitles != null){
-//				newTitle.addAll(currentTitles);
-//			}
-//			newTitle.add(firstTime.title);
-//			newItem.add("1" + firstTime.title );
-//			newItem.add("2" +firstTime.description);
-//			newItem.add("3" + firstTime.date);
-//			list.add(firstTime);
-//			map.put(firstTime.title, firstTime);
-//			ad.notifyDataSetChanged();
-//			editor.putStringSet("title", newTitle);
-//			editor.putStringSet(firstTime.title, newItem);
-//			editor.commit();
-		}
-		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
